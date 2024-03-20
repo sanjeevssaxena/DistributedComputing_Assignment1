@@ -23,7 +23,7 @@ public class ContentProvider {
 		}
 		String strData = "This content is from "+hostName+" written at time"+LocalDateTime.now();
 		byte[] data = strData.getBytes();
-		SimpleDateFormat formatter = new SimpleDateFormat("ddMMyyyy-hhmi");  
+		SimpleDateFormat formatter = new SimpleDateFormat("ddMMyyyy-hhmm");  
 		Date date = new Date();
 		hostName.append("_").append(formatter.format(date));
 		Path path = Paths.get(args[0]+hostName);
