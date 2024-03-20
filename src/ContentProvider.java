@@ -12,20 +12,18 @@ import java.util.Date;
 public class ContentProvider {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 
-		
-		String strData = "This is from node2 at time"+LocalDateTime.now();
-		byte[] data = strData.getBytes();
 		StringBuilder hostName = new StringBuilder();
 		try {
 			hostName.append(InetAddress.getLocalHost().getHostName());
 		} catch (UnknownHostException e1) {
-			// TODO Auto-generated catch block
+			
 			e1.printStackTrace();
 			hostName.append("NoHost");
 		}
-		SimpleDateFormat formatter = new SimpleDateFormat("ddMMyyyy");  
+		String strData = "This content is from "+hostName+" written at time"+LocalDateTime.now();
+		byte[] data = strData.getBytes();
+		SimpleDateFormat formatter = new SimpleDateFormat("ddMMyyyy-hhmi");  
 		Date date = new Date();
 		hostName.append("_").append(formatter.format(date));
 		Path path = Paths.get(args[0]+hostName);
