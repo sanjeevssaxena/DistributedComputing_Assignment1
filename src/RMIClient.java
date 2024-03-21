@@ -66,13 +66,18 @@ public class RMIClient implements Serializable {
 
                 byte [] mydata = inter.downloadFileFromServer(serverpath, hostname);
                 System.out.println("downloading...");
+                if(mydata.length==0) {
+                	System.out.println("File content not found");
+                	return;
+                }
+                System.out.println("Receiving content...");
+                System.out.println("Printing Content..."+new String(mydata));
                 File clientpathfile = new File(clientpath);
                 FileOutputStream out=new FileOutputStream(clientpathfile);                
                 out.write(mydata);
                 out.flush();
                 out.close();
-                System.out.println("Receiving content...");
-                System.out.println("Printing Content..."+mydata);
+                System.out.println("File written to local folder: "+clientpath);
             }
             
             //to list all the files in a directory

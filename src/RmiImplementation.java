@@ -11,6 +11,7 @@ import java.io.Serializable;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.time.LocalDateTime;
 
 public class RmiImplementation extends UnicastRemoteObject implements RmiInterface, Serializable {
 
@@ -41,6 +42,7 @@ public class RmiImplementation extends UnicastRemoteObject implements RmiInterfa
 
     public byte[] downloadFileFromServer(String serverpath, String originator) throws RemoteException {
 
+    	System.out.println("\n\n*************Time ****"+LocalDateTime.now()+"******************");
     	System.out.println("Request received from "+originator+" for file "+serverpath);
         File serverpathfile = new File(serverpath);
         byte[] mydata = new byte[(int) serverpathfile.length()];
@@ -70,6 +72,10 @@ public class RmiImplementation extends UnicastRemoteObject implements RmiInterfa
             try {
             	System.out.println("Initiating request from nearest server for file: "+serverpath);
 				mydata = RMIUtil.getRemoteConnection("NEAREST_SERVER").downloadFileFromServer(serverpath, originator);
+				if(mydata.length==0) {
+					System.out.println("File content not found from nearest server");
+					return mydata;
+				}
 				System.out.println("File received from nearest server. Saving in local server.");
 				uploadFileToServer(mydata, serverpath, mydata.length);
 			} catch (RemoteException | NotBoundException e1) {
