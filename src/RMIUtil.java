@@ -34,7 +34,7 @@ public class RMIUtil {
         if(hostname == null)
         	return flag;
 	
-        if(hostname.equals(hostname))
+        if(hostname.equals(originator))
         	return flag;
         
         return flag;
