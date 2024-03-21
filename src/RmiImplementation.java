@@ -41,10 +41,9 @@ public class RmiImplementation extends UnicastRemoteObject implements RmiInterfa
 
     public byte[] downloadFileFromServer(String serverpath, String originator) throws RemoteException {
 
-        byte[] mydata;
-
+    	System.out.println("Request received from "+originator+" for file "+serverpath);
         File serverpathfile = new File(serverpath);
-        mydata = new byte[(int) serverpathfile.length()];
+        byte[] mydata = new byte[(int) serverpathfile.length()];
         FileInputStream in;
         try {
             in = new FileInputStream(serverpathfile);
@@ -63,12 +62,15 @@ public class RmiImplementation extends UnicastRemoteObject implements RmiInterfa
 
         } catch (FileNotFoundException e) {
 
-            System.out.println("Received FNFE: "+e.getMessage());
-            if(RMIUtil.isOriginatorSameAsNearestServer(originator))
+            System.out.println("File not found in the local server ");
+            if(RMIUtil.isOriginatorSameAsNearestServer(originator)) {
+            	System.out.println("Original request is same as nearest server, hence not initiating from nearest server");
             	return mydata;
-            
+            }
             try {
+            	System.out.println("Initiating request from nearest server for file: "+serverpath);
 				mydata = RMIUtil.getRemoteConnection("NEAREST_SERVER").downloadFileFromServer(serverpath, originator);
+				System.out.println("File received from nearest server. Saving in local server.");
 				uploadFileToServer(mydata, serverpath, mydata.length);
 			} catch (RemoteException | NotBoundException e1) {
 				// TODO Auto-generated catch block

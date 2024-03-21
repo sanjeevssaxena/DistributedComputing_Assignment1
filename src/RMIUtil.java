@@ -24,19 +24,17 @@ public class RMIUtil {
 	
 	public static boolean isOriginatorSameAsNearestServer(String originator) {
 		
-		boolean flag = true;
-		
 		String environment = System.getenv("NEAREST_SERVER");
 		if (environment == null)
-			return flag;
+			return true;
 		        
         String hostname = environment.split(":")[0];
         if(hostname == null)
-        	return flag;
+        	return true;
 	
         if(hostname.equals(originator))
-        	return flag;
+        	return true;
         
-        return flag;
+        return false;
 	}
 }
