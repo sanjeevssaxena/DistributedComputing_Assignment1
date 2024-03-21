@@ -64,7 +64,7 @@ public class RMIClient implements Serializable {
                 serverpath = args[1];
                 clientpath= args[2];
 
-                byte [] mydata = inter.downloadFileFromServer(serverpath);
+                byte [] mydata = inter.downloadFileFromServer(serverpath, hostname);
                 System.out.println("downloading...");
                 File clientpathfile = new File(clientpath);
                 FileOutputStream out=new FileOutputStream(clientpathfile);                

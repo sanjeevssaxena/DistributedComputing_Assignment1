@@ -14,7 +14,7 @@ import java.rmi.server.UnicastRemoteObject;
 
 public class RmiImplementation extends UnicastRemoteObject implements RmiInterface, Serializable {
 
-    protected RmiImplementation(String s) throws RemoteException {
+	protected RmiImplementation(String s) throws RemoteException {
         File storageDir = new File(s);
         storageDir.mkdir();
     }
@@ -39,7 +39,7 @@ public class RmiImplementation extends UnicastRemoteObject implements RmiInterfa
 
     }
 
-    public byte[] downloadFileFromServer(String serverpath) throws RemoteException {
+    public byte[] downloadFileFromServer(String serverpath, String originator) throws RemoteException {
 
         byte[] mydata;
 
@@ -64,8 +64,11 @@ public class RmiImplementation extends UnicastRemoteObject implements RmiInterfa
         } catch (FileNotFoundException e) {
 
             System.out.println("Received FNFE: "+e.getMessage());
+            if(RMIUtil.isOriginatorSameAsNearestServer(originator))
+            	return mydata;
+            
             try {
-				mydata = RMIUtil.getRemoteConnection("NEAREST_SERVER").downloadFileFromServer(serverpath);
+				mydata = RMIUtil.getRemoteConnection("NEAREST_SERVER").downloadFileFromServer(serverpath, originator);
 				uploadFileToServer(mydata, serverpath, mydata.length);
 			} catch (RemoteException | NotBoundException e1) {
 				// TODO Auto-generated catch block
