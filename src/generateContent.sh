@@ -1,1 +1,0 @@
-java ContentProvider /home/labuser/
