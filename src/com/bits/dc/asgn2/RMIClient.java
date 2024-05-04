@@ -1,3 +1,4 @@
+package com.bits.dc.asgn2;
 //This class connects to the server and accepts commands from the user.
 
 import java.io.File;
